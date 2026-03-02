@@ -2,6 +2,9 @@
 set -euo pipefail
 IFS=$'\n\t'
 
+export SKIP_FW_QUERY="1"
+export FINGERPRINT="BMW_SP2018"
+
 # On any failure, run the fallback launcher
 trap 'exec ./launch_chffrplus.sh' ERR
 C3_LAUNCH_SH="./sunnypilot/system/hardware/c3/launch_chffrplus.sh"
