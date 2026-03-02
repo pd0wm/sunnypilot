@@ -21,5 +21,5 @@
   path = sunnypilot/neural_network_data
   url = https://github.com/sunnypilot/neural-network-data.git
 [submodule "selfdrive/pandad"]
-	path = selfdrive/pandad
-	url = https://github.com/dynm/pandad-pico-flexray.git
+  path = selfdrive/pandad
+  url = https://github.com/pd0wm/pandad-pico-flexray.git
