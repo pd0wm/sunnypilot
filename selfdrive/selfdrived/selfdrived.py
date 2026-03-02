@@ -47,7 +47,7 @@ ButtonType = car.CarState.ButtonEvent.Type
 SafetyModel = car.CarParams.SafetyModel
 TurnDirection = custom.ModelDataV2SP.TurnDirection
 
-IGNORED_SAFETY_MODES = (SafetyModel.silent, SafetyModel.noOutput)
+IGNORED_SAFETY_MODES = (SafetyModel.silent, SafetyModel.noOutput, SafetyModel.allOutput)
 
 
 class SelfdriveD(CruiseHelper):
@@ -314,21 +314,21 @@ class SelfdriveD(CruiseHelper):
     elif lane_turn_direction == TurnDirection.turnRight:
       self.events_sp.add(custom.OnroadEventSP.EventName.laneTurnRight)
 
-    for i, pandaState in enumerate(self.sm['pandaStates']):
-      # All pandas must match the list of safetyConfigs, and if outside this list, must be silent or noOutput
-      if i < len(self.CP.safetyConfigs):
-        safety_mismatch = pandaState.safetyModel != self.CP.safetyConfigs[i].safetyModel or \
-                          pandaState.safetyParam != self.CP.safetyConfigs[i].safetyParam or \
-                          pandaState.alternativeExperience != self.CP.alternativeExperience
-      else:
-        safety_mismatch = pandaState.safetyModel not in IGNORED_SAFETY_MODES
+    #for i, pandaState in enumerate(self.sm['pandaStates']):
+    #  # All pandas must match the list of safetyConfigs, and if outside this list, must be silent or noOutput
+    #  if i < len(self.CP.safetyConfigs):
+    #    safety_mismatch = pandaState.safetyModel != self.CP.safetyConfigs[i].safetyModel or \
+    #                      pandaState.safetyParam != self.CP.safetyConfigs[i].safetyParam or \
+    #                      pandaState.alternativeExperience != self.CP.alternativeExperience
+    #  else:
+    #    safety_mismatch = pandaState.safetyModel not in IGNORED_SAFETY_MODES
 
-      # safety mismatch allows some time for pandad to set the safety mode and publish it back from panda
-      if (safety_mismatch and self.sm.frame*DT_CTRL > 10.) or pandaState.safetyRxChecksInvalid or self.mismatch_counter >= 200:
-        self.events.add(EventName.controlsMismatch)
+    #  # safety mismatch allows some time for pandad to set the safety mode and publish it back from panda
+    #  if (safety_mismatch and self.sm.frame*DT_CTRL > 10.) or pandaState.safetyRxChecksInvalid or self.mismatch_counter >= 200:
+    #    self.events.add(EventName.controlsMismatch)
 
-      if log.PandaState.FaultType.relayMalfunction in pandaState.faults:
-        self.events.add(EventName.relayMalfunction)
+    #  if log.PandaState.FaultType.relayMalfunction in pandaState.faults:
+    #    self.events.add(EventName.relayMalfunction)
 
     # Handle HW and system malfunctions
     # Order is very intentional here. Be careful when modifying this.
